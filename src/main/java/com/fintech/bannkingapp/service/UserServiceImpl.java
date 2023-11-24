@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static com.fintech.bannkingapp.util.AccountUtils.generateAccountNumber;
+import static com.fintech.bannkingapp.util.AccountUtils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +20,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ResponseEntity<BankResponse> createAccount(UserDto userDto) {
+
+        if (userRepository.existsByEmail(userDto.getEmail())){
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE));
+        }
 
         User newUser = User.builder()
                 .firstName(userDto.getFirstName())
@@ -37,7 +41,7 @@ public class UserServiceImpl implements UserService{
 //                .password(userDto.getPassword())
                 .accountNumber(generateAccountNumber())
                 .build();
-
-        return null;
+        User savedUser = userRepository.save(newUser);
+        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_CREATED_CODE, ACCOUNT_CREATED_MESSAGE, savedUser));
     }
 }

@@ -1,16 +1,25 @@
 package com.fintech.bannkingapp.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class BankResponse {
     private String responseCode;
     private String responseMessage;
     private AccountInfo accountInfo;
+    private Object object;
+
+    public BankResponse(String accountExistsCode, String accountExistsMessage) {
+        this.responseCode = accountExistsCode;
+        this.responseMessage = accountExistsMessage;
+    }
+
+    public BankResponse(String responseCode, String responseMessage, Object object) {
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+        this.object = object;
+    }
 }

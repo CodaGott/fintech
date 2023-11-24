@@ -36,6 +36,7 @@ public class User {
     private String phoneNumber;
     private String altPhoneNumber;
     private String status;
+    private String accountType;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

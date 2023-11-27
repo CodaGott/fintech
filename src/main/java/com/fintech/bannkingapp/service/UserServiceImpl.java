@@ -1,6 +1,7 @@
 package com.fintech.bannkingapp.service;
 
 import com.fintech.bannkingapp.dto.BankResponse;
+import com.fintech.bannkingapp.dto.EmailDetails;
 import com.fintech.bannkingapp.dto.UserDto;
 import com.fintech.bannkingapp.entity.User;
 import com.fintech.bannkingapp.repo.UserRepository;
@@ -17,6 +18,7 @@ import static com.fintech.bannkingapp.util.AccountUtils.*;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Override
     public ResponseEntity<BankResponse> createAccount(UserDto userDto) {
@@ -42,6 +44,15 @@ public class UserServiceImpl implements UserService{
                 .accountNumber(generateAccountNumber())
                 .build();
         User savedUser = userRepository.save(newUser);
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(savedUser.getEmail())
+                .subject("Account Creation Email")
+                .messageBody("Dear " + savedUser.getFirstName() + " congratulations, your account was created Successfully. \n" +
+                        "Here is your Account details: \n" + " Account Number: "+ savedUser.getAccountNumber()+ "\n" +
+                        "Account Name: " + savedUser.getFirstName() +" " + savedUser.getLastName() + " " + savedUser.getOtherName())
+                .build();
+
+        emailService.sendEmail(emailDetails);
         return ResponseEntity.ok().body(new BankResponse(ACCOUNT_CREATED_CODE, ACCOUNT_CREATED_MESSAGE, savedUser));
     }
 }

@@ -9,6 +9,11 @@ public class AccountUtils {
     public static final String ACCOUNT_CREATED_CODE = "200";
     public static final String ACCOUNT_EXISTS_MESSAGE = "This user already exists";
     public static final String ACCOUNT_CREATED_MESSAGE = "Account Created successfully";
+    public static final String ACCOUNT_DOES_NOT_EXIST_MESSAGE = "Account Number Does Not Exist";
+    public static final String ACCOUNT_DOES_NOT_EXIST_CODE = "404";
+    public static final String ACCOUNT_DOES_EXIST_MESSAGE = "Found Account with Number ";
+    public static final String NULL_ACCOUNT_MESSAGE = "Please Pass Account Number To Proceed";
+    public static final String NULL_ACCOUNT_CODE = "800";
 
     public static String generateAccountNumber(){
         Year currentYear = Year.now();

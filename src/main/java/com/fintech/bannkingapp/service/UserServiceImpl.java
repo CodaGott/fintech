@@ -2,6 +2,7 @@ package com.fintech.bannkingapp.service;
 
 import com.fintech.bannkingapp.dto.BankResponse;
 import com.fintech.bannkingapp.dto.EmailDetails;
+import com.fintech.bannkingapp.dto.EnquiryRequest;
 import com.fintech.bannkingapp.dto.UserDto;
 import com.fintech.bannkingapp.entity.User;
 import com.fintech.bannkingapp.repo.UserRepository;
@@ -54,5 +55,31 @@ public class UserServiceImpl implements UserService{
 
         emailService.sendEmail(emailDetails);
         return ResponseEntity.ok().body(new BankResponse(ACCOUNT_CREATED_CODE, ACCOUNT_CREATED_MESSAGE, savedUser));
+    }
+
+    @Override
+    public ResponseEntity<BankResponse> makeBalanceEnquiry(EnquiryRequest request) {
+        boolean isAccountExist = userRepository.existsByAccountNumber(request.getAccountNumber());
+        if (request.equals(null)){
+            return ResponseEntity.badRequest().body(new BankResponse(NULL_ACCOUNT_CODE, NULL_ACCOUNT_MESSAGE));
+        }
+        if (!isAccountExist){
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
+        }
+        User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
+        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, foundUser));
+    }
+
+    @Override
+    public ResponseEntity<BankResponse> makeNameEnquiry(EnquiryRequest request) {
+        boolean isAccountExist = userRepository.existsByAccountNumber(request.getAccountNumber());
+        if (request.equals(null)){
+            return ResponseEntity.badRequest().body(new BankResponse(NULL_ACCOUNT_CODE, NULL_ACCOUNT_MESSAGE));
+        }
+        if (!isAccountExist){
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
+        }
+        User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
+        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, foundUser));
     }
 }

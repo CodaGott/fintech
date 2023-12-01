@@ -7,7 +7,7 @@ public class AccountUtils {
 
     public static final String ACCOUNT_EXISTS_CODE = "001";
     public static final String ACCOUNT_CREATED_CODE = "200";
-    public static final String ACCOUNT_EXISTS_MESSAGE = "This user already exists";
+    public static final String ACCOUNT_EXISTS_MESSAGE = "This user exists";
     public static final String ACCOUNT_CREATED_MESSAGE = "Account Created successfully";
     public static final String ACCOUNT_DOES_NOT_EXIST_MESSAGE = "Account Number Does Not Exist";
     public static final String ACCOUNT_DOES_NOT_EXIST_CODE = "404";

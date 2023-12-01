@@ -1,9 +1,6 @@
 package com.fintech.bannkingapp.service;
 
-import com.fintech.bannkingapp.dto.BankResponse;
-import com.fintech.bannkingapp.dto.EmailDetails;
-import com.fintech.bannkingapp.dto.EnquiryRequest;
-import com.fintech.bannkingapp.dto.UserDto;
+import com.fintech.bannkingapp.dto.*;
 import com.fintech.bannkingapp.entity.User;
 import com.fintech.bannkingapp.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +64,10 @@ public class UserServiceImpl implements UserService{
             return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
         }
         User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
-        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, foundUser));
+        BalanceResponse balanceResponse = BalanceResponse.builder()
+                .accountBalance(foundUser.getAccountBalance())
+                .accountNumber(foundUser.getAccountNumber()).build();
+        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, balanceResponse));
     }
 
     @Override
@@ -80,6 +80,17 @@ public class UserServiceImpl implements UserService{
             return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
         }
         User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
-        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, foundUser));
+        NameEnquiryResponse response = NameEnquiryResponse.builder()
+                .lastName(foundUser.getLastName())
+                .firstName(foundUser.getFirstName()).accountBalance(foundUser.getAccountBalance())
+                .accountNumber(foundUser.getAccountNumber())
+                .accountType(foundUser.getAccountType())
+                .address(foundUser.getAddress())
+                .email(foundUser.getEmail())
+                .phoneNumber(foundUser.getPhoneNumber())
+                .stateOfOrigin(foundUser.getStateOfOrigin())
+                .accountBalance(foundUser.getAccountBalance())
+                .build();
+        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, response));
     }
 }

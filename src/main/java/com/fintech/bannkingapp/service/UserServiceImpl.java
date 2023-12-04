@@ -93,4 +93,14 @@ public class UserServiceImpl implements UserService{
                 .build();
         return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, response));
     }
+
+    @Override
+    public ResponseEntity<BankResponse> creditAccount(CreditDebitRequest request) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<BankResponse> debitAccount(CreditDebitRequest request) {
+        return null;
+    }
 }

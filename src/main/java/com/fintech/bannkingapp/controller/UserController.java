@@ -1,6 +1,7 @@
 package com.fintech.bannkingapp.controller;
 
 import com.fintech.bannkingapp.dto.BankResponse;
+import com.fintech.bannkingapp.dto.CreditDebitRequest;
 import com.fintech.bannkingapp.dto.EnquiryRequest;
 import com.fintech.bannkingapp.dto.UserDto;
 import com.fintech.bannkingapp.service.UserService;
@@ -28,5 +29,10 @@ public class UserController {
     @GetMapping("/name-enquiry")
     public ResponseEntity<BankResponse> nameEnquiry(@RequestBody EnquiryRequest request){
         return userService.makeNameEnquiry(request);
+    }
+
+    @PostMapping("/credit-account")
+    public ResponseEntity<BankResponse> creditAccount(@RequestBody CreditDebitRequest request){
+        return userService.creditAccount(request);
     }
 }

@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService{
             return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
         }
         User userToDebit = userRepository.findByAccountNumber(request.getAccountNumber());
-        if (userToDebit.getAccountBalance().compareTo(request.getAmount()) >= 0) {
+        if (userToDebit.getAccountBalance().compareTo(request.getAmount()) >= 0.00) {
             userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(request.getAmount()));
             userRepository.save(userToDebit);
         }else {

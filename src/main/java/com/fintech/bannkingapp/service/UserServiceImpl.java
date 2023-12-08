@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService{
             return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
         }
         User userToCredit = userRepository.findByAccountNumber(request.getAccountNumber());
-        userToCredit.setAccountBalance(request.getAmount());
+        userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
         userRepository.save(userToCredit);
         Object response = "Your account has been credited with " + request.getAmount();
 

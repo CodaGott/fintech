@@ -129,8 +129,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<BankResponse> transfer(TransferRequest request) {
 
-        Boolean accountExist = userRepository.existsByAccountNumber(request.getAccountNumberToDebit());
-        if (!accountExist){
+        Boolean debitAccountExist = userRepository.existsByAccountNumber(request.getAccountNumberToDebit());
+        if (!debitAccountExist){
             return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
         }
         Boolean creditAccountExist = userRepository.existsByAccountNumber(request.getAccountNumberToCredit());

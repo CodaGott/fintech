@@ -125,4 +125,30 @@ public class UserServiceImpl implements UserService{
 
         return ResponseEntity.ok().body(new BankResponse(ACCOUNT_DEBIT_CODE, ACCOUNT_DEBITED_MESSAGE, response));
     }
+
+    @Override
+    public ResponseEntity<BankResponse> transfer(TransferRequest request) {
+
+        Boolean accountExist = userRepository.existsByAccountNumber(request.getAccountNumberToDebit());
+        if (!accountExist){
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
+        }
+        Boolean creditAccountExist = userRepository.existsByAccountNumber(request.getAccountNumberToCredit());
+        if (!creditAccountExist){
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
+        }
+
+        User userToDebit = userRepository.findByAccountNumber(request.getAccountNumberToDebit());
+        if (userToDebit.getAccountBalance().compareTo(request.getAmount()) >= 0.00) {
+            userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(request.getAmount()));
+            User userToCredit = userRepository.findByAccountNumber(request.getAccountNumberToCredit());
+            userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
+            userRepository.save(userToDebit);
+            userRepository.save(userToCredit);
+            Object response = "Your account has been credited with " + request.getAmount();
+            return ResponseEntity.ok().body(new BankResponse(ACCOUNT_EXISTS_CODE, ACCOUNT_EXISTS_MESSAGE, response));
+        }else {
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_EXIST_MESSAGE, INSUFFICIENT_FUNDS));
+        }
+    }
 }

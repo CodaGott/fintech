@@ -1,9 +1,6 @@
 package com.fintech.bannkingapp.controller;
 
-import com.fintech.bannkingapp.dto.BankResponse;
-import com.fintech.bannkingapp.dto.CreditDebitRequest;
-import com.fintech.bannkingapp.dto.EnquiryRequest;
-import com.fintech.bannkingapp.dto.UserDto;
+import com.fintech.bannkingapp.dto.*;
 import com.fintech.bannkingapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +35,9 @@ public class UserController {
     @PostMapping("/debit-account")
     public ResponseEntity<BankResponse> debitAccount(@RequestBody CreditDebitRequest request){
         return userService.debitAccount(request);
+    }
+    @PostMapping("/transfer")
+    public ResponseEntity<BankResponse> transfer(@RequestBody TransferRequest request){
+        return userService.transfer(request);
     }
 }

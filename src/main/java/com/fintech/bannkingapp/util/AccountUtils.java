@@ -14,6 +14,10 @@ public class AccountUtils {
     public static final String ACCOUNT_DOES_EXIST_MESSAGE = "Found Account with Number ";
     public static final String NULL_ACCOUNT_MESSAGE = "Please Pass Account Number To Proceed";
     public static final String NULL_ACCOUNT_CODE = "800";
+    public static final String ACCOUNT_DEBIT_CODE = "900";
+    public static final String INSUFFICIENT_FUNDS = "You don't have enough money to carry out this transaction. Please top up";
+    public static final String ACCOUNT_DEBITED_MESSAGE = "Your account has been debited, thanks for you transaction";
+
 
     public static String generateAccountNumber(){
         Year currentYear = Year.now();

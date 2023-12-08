@@ -110,6 +110,19 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ResponseEntity<BankResponse> debitAccount(CreditDebitRequest request) {
-        return null;
+        Boolean accountExist = userRepository.existsByAccountNumber(request.getAccountNumber());
+        if (!accountExist){
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_NOT_EXIST_CODE, ACCOUNT_DOES_NOT_EXIST_MESSAGE));
+        }
+        User userToDebit = userRepository.findByAccountNumber(request.getAccountNumber());
+        if (userToDebit.getAccountBalance().compareTo(request.getAmount()) >= 0) {
+            userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(request.getAmount()));
+            userRepository.save(userToDebit);
+        }else {
+            return ResponseEntity.badRequest().body(new BankResponse(ACCOUNT_DOES_EXIST_MESSAGE, INSUFFICIENT_FUNDS));
+        }
+        Object response = "Your account has been debited " + request.getAmount();
+
+        return ResponseEntity.ok().body(new BankResponse(ACCOUNT_DEBIT_CODE, ACCOUNT_DEBITED_MESSAGE, response));
     }
 }
